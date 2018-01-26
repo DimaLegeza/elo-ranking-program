@@ -12,7 +12,7 @@ import org.homemade.elo.entities.Match;
 import org.homemade.elo.entities.Player;
 import org.homemade.elo.entities.dto.BasePlayer;
 import org.homemade.elo.entities.dto.PlayerDetails;
-import org.homemade.elo.entities.dto.PlayerWithQuality;
+import org.homemade.elo.entities.dto.PlayerWithProperty;
 import org.homemade.elo.enums.Order;
 import org.homemade.elo.util.RankingProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +43,13 @@ public class PlayerService {
 		} else {
 			return players
 				.stream()
-				.map(player -> new PlayerWithQuality(
+				.map(player -> new PlayerWithProperty(
 					player.getName(),
 					player.getRank(),
-					this.playerQuality(player, order),
+					this.playerProperty(player, order),
 					order)
 				)
-				.sorted(Comparator.comparing(PlayerWithQuality::getQuality).thenComparing(PlayerWithQuality::getRank).reversed())
+				.sorted(Comparator.comparing(PlayerWithProperty::getProperty).thenComparing(PlayerWithProperty::getRank).reversed())
 				.map(player -> player.formatString(maxNameLength))
 				.collect(Collectors.toList());
 		}
@@ -80,7 +80,7 @@ public class PlayerService {
 		}
 	}
 
-	private double playerQuality(Player player, Order order) {
+	private double playerProperty(Player player, Order order) {
 		switch(order) {
 			case RANK: 		return player.getRank();
 			case SCORE:		return ((float)player.getWins()/player.getGamesPlayed());

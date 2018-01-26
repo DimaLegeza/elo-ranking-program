@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class BasePlayer {
-	private static final String MESSAGE = "%s: %s - %d";
+	protected static final String MESSAGE = "%s: %s - %d";
 	private String name;
 	private int rank;
 

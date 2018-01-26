@@ -7,6 +7,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class PlayerDetails {
+	private static final String PLAYER_NAME_PREFIX = "---- ";
+	private static final String PLAYER_NAME_SUFFIX = " ----";
+	private static final String PLAYER_WON_MATCHES = "* Won matches against:";
+	private static final String PLAYER_LOST_MATCHES = "* Was beaten by:";
 	private String name;
 	private List<String> beatedBy = new ArrayList<>();
 	private List<String> lostFrom = new ArrayList<>();
@@ -26,15 +30,19 @@ public class PlayerDetails {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("---- ").append(this.name).append(" ----").append(System.lineSeparator());
+		builder.append(PLAYER_NAME_PREFIX).append(this.name).append(PLAYER_NAME_SUFFIX);
 		if (this.beatedBy.size() > 0) {
 			builder.append(System.lineSeparator());
-			builder.append("* Won matches against:").append(System.lineSeparator());
+			builder.append(System.lineSeparator());
+			builder.append(PLAYER_WON_MATCHES).append(System.lineSeparator());
 			builder.append(this.playerWithMatchCounter(this.beatedBy));
 		}
 		if (this.lostFrom.size() > 0) {
+			if (beatedBy.size() == 0) {
+				builder.append(System.lineSeparator());
+			}
 			builder.append(System.lineSeparator());
-			builder.append("* Was beaten by:").append(System.lineSeparator());
+			builder.append(PLAYER_LOST_MATCHES).append(System.lineSeparator());
 			builder.append(this.playerWithMatchCounter(this.lostFrom));
 		}
 		return builder.toString();

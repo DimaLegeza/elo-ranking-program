@@ -19,9 +19,13 @@ public class ResourcesService {
     private List<Match> matches = new ArrayList<>();
 
     @Autowired
-    public ResourcesService(FileReaderUtil readerUtil) throws IOException {
-        BufferedReader namesReader = readerUtil.asReader("names.tsv");
-        BufferedReader matchesReader = readerUtil.asReader("matches.tsv");
+    public ResourcesService(FileReaderUtil readerUtil) {
+        this(readerUtil, "names.tsv", "matches.tsv");
+    }
+
+    public ResourcesService(FileReaderUtil readerUtil, String playerNamesFile, String matchesFileName) {
+        BufferedReader namesReader = readerUtil.asReader(playerNamesFile);
+        BufferedReader matchesReader = readerUtil.asReader(matchesFileName);
         this.readNames(namesReader);
         this.readMatches(matchesReader);
     }
@@ -34,25 +38,45 @@ public class ResourcesService {
         return matches;
     }
 
-    private void readNames(BufferedReader reader) throws IOException {
-        String lineContent = reader.readLine();
-        while(lineContent != null) {
-            int id = Integer.parseInt(lineContent.split("\t")[0]);
-            final Player player = new Player(id, lineContent.split("\t")[1]);
-            this.players.put(id, player);
-            lineContent = reader.readLine();
+    private void readNames(BufferedReader reader) {
+        try {
+            String lineContent = reader.readLine();
+            while (lineContent != null) {
+                int id = Integer.parseInt(lineContent.split("\t")[0]);
+                final Player player = new Player(id, lineContent.split("\t")[1]);
+                this.players.put(id, player);
+                lineContent = reader.readLine();
+            }
+        } catch (IOException ex) {
+            System.out.println(ex);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                System.out.println("Failed to close input reader");
+                throw new RuntimeException(ex);
+            }
         }
-        reader.close();
     }
 
-    private void readMatches(BufferedReader reader) throws IOException {
-        String lineContent = reader.readLine();
-        while(lineContent != null) {
-            final Match match = new Match(lineContent.split("\t")[0], lineContent.split("\t")[1]);
-            this.matches.add(match);
-            lineContent = reader.readLine();
+    private void readMatches(BufferedReader reader) {
+        try {
+            String lineContent = reader.readLine();
+            while (lineContent != null) {
+                final Match match = new Match(lineContent.split("\t")[0], lineContent.split("\t")[1]);
+                this.matches.add(match);
+                lineContent = reader.readLine();
+            }
+        } catch (IOException ex) {
+            System.out.println(ex);
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                System.out.println("Failed to close input reader");
+                throw new RuntimeException(ex);
+            }
         }
-        reader.close();
     }
 
 }
