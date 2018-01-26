@@ -1,19 +1,21 @@
 package org.homemade.elo.services;
 
-import org.homemade.elo.dto.Match;
-import org.homemade.elo.dto.Name;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.homemade.elo.entities.Match;
+import org.homemade.elo.entities.Player;
 import org.homemade.elo.util.FileReaderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class ResourcesService {
-    private List<Name> names = new ArrayList<>();
+    private Map<Integer, Player> players = new HashMap<>();
     private List<Match> matches = new ArrayList<>();
 
     @Autowired
@@ -24,8 +26,8 @@ public class ResourcesService {
         this.readMatches(matchesReader);
     }
 
-    public List<Name> getNames() {
-        return names;
+    public Map<Integer, Player> getPlayers() {
+        return players;
     }
 
     public List<Match> getMatches() {
@@ -35,8 +37,9 @@ public class ResourcesService {
     private void readNames(BufferedReader reader) throws IOException {
         String lineContent = reader.readLine();
         while(lineContent != null) {
-            final Name name = new Name(lineContent.split("\t")[0], lineContent.split("\t")[1]);
-            this.names.add(name);
+            int id = Integer.parseInt(lineContent.split("\t")[0]);
+            final Player player = new Player(id, lineContent.split("\t")[1]);
+            this.players.put(id, player);
             lineContent = reader.readLine();
         }
         reader.close();

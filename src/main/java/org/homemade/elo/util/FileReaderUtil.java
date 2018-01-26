@@ -13,5 +13,4 @@ public class FileReaderUtil {
         return new BufferedReader(new InputStreamReader(this.classLoader.getResourceAsStream(fileName)));
     }
 
-
 }
