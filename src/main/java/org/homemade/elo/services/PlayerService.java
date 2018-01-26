@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.homemade.elo.entities.Match;
 import org.homemade.elo.entities.Player;
 import org.homemade.elo.entities.dto.BasePlayer;
+import org.homemade.elo.entities.dto.PlayerDetails;
 import org.homemade.elo.entities.dto.PlayerWithQuality;
 import org.homemade.elo.enums.Order;
 import org.homemade.elo.util.RankingProvider;
@@ -55,7 +56,18 @@ public class PlayerService {
 	}
 
 	public String getPlayerDetails(int id) {
-		return this.resourcesService.getPlayers().get(id).getName();
+		if (!this.resourcesService.getPlayers().containsKey(id)) {
+			return "User not found";
+		}
+		final PlayerDetails playerDetails = new PlayerDetails(this.resourcesService.getPlayers().get(id).getName());
+		for (Match match: this.resourcesService.getMatches()) {
+			if (id == match.getWinner()) {
+				playerDetails.addBeatedByCurrentPlayer(this.resourcesService.getPlayers().get(match.getLooser()).getName());
+			} else if (id == match.getLooser()) {
+				playerDetails.addCurrentLostFromPlayer(this.resourcesService.getPlayers().get(match.getWinner()).getName());
+			}
+		}
+		return playerDetails.toString();
 	}
 
 	private void calculateRanks() {
