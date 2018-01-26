@@ -81,6 +81,9 @@ public class PlayerService {
 	}
 
 	private double playerProperty(Player player, Order order) {
+		if (order == null) {
+			return 0;
+		}
 		switch(order) {
 			case RANK: 		return player.getRank();
 			case SCORE:		return ((float)player.getWins()/player.getGamesPlayed());

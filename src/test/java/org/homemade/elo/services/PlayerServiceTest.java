@@ -99,6 +99,17 @@ public class PlayerServiceTest {
 	}
 
 	@Test
+	public void testGetPlayersByNull() {
+		String[] ranks = {
+			"Gerard   : Unknown property - 0.0 (rank - 1440)",
+			"Kate     : Unknown property - 0.0 (rank - 1420)",
+			"Dima     : Unknown property - 0.0 (rank - 1380)",
+			"Wendy    : Unknown property - 0.0 (rank - 1360)"
+		};
+		assertEquals(Arrays.asList(ranks), this.fixture.getPlayers(null));
+	}
+
+	@Test
 	public void getUserDetails_existingUser() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("---- Kate ----")
