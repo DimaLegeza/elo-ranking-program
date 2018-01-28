@@ -1,13 +1,5 @@
 package org.homemade.elo.services;
 
-import static org.homemade.elo.enums.Order.RANK;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.homemade.elo.entities.Match;
 import org.homemade.elo.entities.Player;
 import org.homemade.elo.entities.dto.BasePlayer;
@@ -17,6 +9,14 @@ import org.homemade.elo.enums.Order;
 import org.homemade.elo.util.RankingProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static org.homemade.elo.enums.Order.RANK;
 
 @Service
 public class PlayerService {
@@ -49,7 +49,11 @@ public class PlayerService {
 					this.playerProperty(player, order),
 					order)
 				)
-				.sorted(Comparator.comparing(PlayerWithProperty::getProperty).thenComparing(PlayerWithProperty::getRank).reversed())
+				.sorted(Comparator
+						.comparing(PlayerWithProperty::getProperty)
+						.thenComparing(PlayerWithProperty::getRank)
+						.reversed()
+				)
 				.map(player -> player.formatString(maxNameLength))
 				.collect(Collectors.toList());
 		}
@@ -75,8 +79,10 @@ public class PlayerService {
 		for (final Match match: this.resourcesService.getMatches()) {
 			Player winner = players.get(match.getWinner());
 			Player looser = players.get(match.getLooser());
-			winner.setRank(this.rankingProvider.calculateRank(winner, looser, 1)).incrementGames(true);
-			looser.setRank(this.rankingProvider.calculateRank(looser, winner, 0)).incrementGames(false);
+			int newWinnerRank = this.rankingProvider.calculateRank(winner, looser, 1);
+			int newLooserRank = this.rankingProvider.calculateRank(looser, winner, 0);
+			winner.setRank(newWinnerRank).incrementGames(true);
+			looser.setRank(newLooserRank).incrementGames(false);
 		}
 	}
 

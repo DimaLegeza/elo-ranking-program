@@ -1,23 +1,19 @@
 package org.homemade.elo.services;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.homemade.elo.entities.Match;
 import org.homemade.elo.entities.Player;
 import org.homemade.elo.enums.Order;
 import org.homemade.elo.util.RankingProvider;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class PlayerServiceTest {
 	private PlayerService fixture;
@@ -58,9 +54,9 @@ public class PlayerServiceTest {
 	public void testGetPlayersByRank() {
 		String[] ranks = {
 			"Gerard   : Rank - 1440",
-			"Kate     : Rank - 1420",
-			"Dima     : Rank - 1380",
-			"Wendy    : Rank - 1360"
+			"Kate     : Rank - 1416",
+			"Dima     : Rank - 1383",
+			"Wendy    : Rank - 1361"
 		};
 		assertEquals(Arrays.asList(ranks), this.fixture.getPlayers(Order.RANK));
 	}
@@ -69,9 +65,9 @@ public class PlayerServiceTest {
 	public void testGetPlayersByScore() {
 		String[] ranks = {
 			"Gerard   : Score - 0.75 (rank - 1440)",
-			"Kate     : Score - 0.6666666865348816 (rank - 1420)",
-			"Dima     : Score - 0.3333333432674408 (rank - 1380)",
-			"Wendy    : Score - 0.25 (rank - 1360)"
+			"Kate     : Score - 0.6666666865348816 (rank - 1416)",
+			"Dima     : Score - 0.3333333432674408 (rank - 1383)",
+			"Wendy    : Score - 0.25 (rank - 1361)"
 		};
 		assertEquals(Arrays.asList(ranks), this.fixture.getPlayers(Order.SCORE));
 	}
@@ -80,9 +76,9 @@ public class PlayerServiceTest {
 	public void testGetPlayersByWins() {
 		String[] ranks = {
 			"Gerard   : Wins - 3.0 (rank - 1440)",
-			"Kate     : Wins - 2.0 (rank - 1420)",
-			"Dima     : Wins - 1.0 (rank - 1380)",
-			"Wendy    : Wins - 1.0 (rank - 1360)"
+			"Kate     : Wins - 2.0 (rank - 1416)",
+			"Dima     : Wins - 1.0 (rank - 1383)",
+			"Wendy    : Wins - 1.0 (rank - 1361)"
 		};
 		assertEquals(Arrays.asList(ranks), this.fixture.getPlayers(Order.WINS));
 	}
@@ -90,10 +86,10 @@ public class PlayerServiceTest {
 	@Test
 	public void testGetPlayersByLosses() {
 		String[] ranks = {
-			"Wendy    : Losses - 3.0 (rank - 1360)",
-			"Dima     : Losses - 2.0 (rank - 1380)",
+			"Wendy    : Losses - 3.0 (rank - 1361)",
+			"Dima     : Losses - 2.0 (rank - 1383)",
 			"Gerard   : Losses - 1.0 (rank - 1440)",
-			"Kate     : Losses - 1.0 (rank - 1420)"
+			"Kate     : Losses - 1.0 (rank - 1416)"
 		};
 		assertEquals(Arrays.asList(ranks), this.fixture.getPlayers(Order.LOSSES));
 	}
@@ -102,9 +98,9 @@ public class PlayerServiceTest {
 	public void testGetPlayersByNull() {
 		String[] ranks = {
 			"Gerard   : Unknown property - 0.0 (rank - 1440)",
-			"Kate     : Unknown property - 0.0 (rank - 1420)",
-			"Dima     : Unknown property - 0.0 (rank - 1380)",
-			"Wendy    : Unknown property - 0.0 (rank - 1360)"
+			"Kate     : Unknown property - 0.0 (rank - 1416)",
+			"Dima     : Unknown property - 0.0 (rank - 1383)",
+			"Wendy    : Unknown property - 0.0 (rank - 1361)"
 		};
 		assertEquals(Arrays.asList(ranks), this.fixture.getPlayers(null));
 	}

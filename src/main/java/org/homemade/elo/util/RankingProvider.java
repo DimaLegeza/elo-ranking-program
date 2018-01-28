@@ -8,9 +8,11 @@ public class RankingProvider {
 
 	// recalculation of rank for firstPlayer supplied
 	public int calculateRank(Player firstPlayer, Player secondPlayer, int actuallyScored) {
-		double expectedScore = 1 / (1 + Math.pow(10, ((secondPlayer.getRank() - firstPlayer.getRank())/400)));
+		double expectedScore = 1 / (
+				1 + Math.pow(10, ((float)(secondPlayer.getRank() - firstPlayer.getRank())/400))
+		);
 		int rankCoeff = this.getRankCoefficient(firstPlayer.getRank(), firstPlayer.getGamesPlayed());
-		return (int)(firstPlayer.getRank() + rankCoeff * (actuallyScored - expectedScore));
+		return (int)Math.round(firstPlayer.getRank() + rankCoeff * (actuallyScored - expectedScore));
 	}
 
 	/*
