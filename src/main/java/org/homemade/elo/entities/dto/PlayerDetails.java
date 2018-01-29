@@ -41,7 +41,7 @@ public class PlayerDetails {
 	}
 
 	public String formatString() {
-		StringBuilder builder = new StringBuilder();
+		StringBuilder builder = new StringBuilder(System.lineSeparator());
 		builder.append(PLAYER_NAME_PREFIX).append(this.name).append(PLAYER_NAME_SUFFIX);
 		if (this.beat.size() > 0) {
 			builder.append(System.lineSeparator());

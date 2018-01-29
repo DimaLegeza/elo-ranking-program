@@ -9,6 +9,8 @@ import org.homemade.elo.entities.dto.PlayerDetails;
 import org.homemade.elo.entities.dto.PlayerWithProperty;
 import org.homemade.elo.enums.Order;
 import org.homemade.elo.services.PlayerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +21,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class PlayerController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlayerController.class);
 
     @Autowired
     private PlayerService playerService;
@@ -35,7 +38,7 @@ public class PlayerController {
         res.stream()
             .map(player -> player.formatString(this.playerService.getPlayerNameMaxLength()))
             .collect(Collectors.toList())
-            .forEach(System.out::println);
+            .forEach(LOGGER::info);
         return res;
     }
 
@@ -46,7 +49,7 @@ public class PlayerController {
         res.stream()
             .map(player -> player.formatString(this.playerService.getPlayerNameMaxLength()))
             .collect(Collectors.toList())
-            .forEach(System.out::println);
+            .forEach(LOGGER::info);
         return res;
     }
 
@@ -54,7 +57,7 @@ public class PlayerController {
     @ApiOperation(value = "Get player details", notes = "Generate a report for each person, showing with whom they played and how they fared.")
     public PlayerDetails getPlayerDetails(@PathVariable final int id) {
         final PlayerDetails details = this.playerService.getPlayerDetails(id);
-        System.out.println(details.formatString());
+        LOGGER.info(details.formatString());
         return details;
     }
 

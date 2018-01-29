@@ -10,11 +10,15 @@ import java.util.Map;
 import org.homemade.elo.entities.Match;
 import org.homemade.elo.entities.Player;
 import org.homemade.elo.util.FileReaderUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ResourcesService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResourcesService.class);
+
     private Map<Integer, Player> players = new HashMap<>();
     private List<Match> matches = new ArrayList<>();
 
@@ -48,12 +52,12 @@ public class ResourcesService {
                 lineContent = reader.readLine();
             }
         } catch (IOException ex) {
-            System.out.println(ex);
+            LOGGER.info("Exception encountered while players processing", ex);
         } finally {
             try {
                 reader.close();
             } catch (IOException ex) {
-                System.out.println("Failed to close input reader");
+                LOGGER.info("Failed to close input reader");
                 throw new RuntimeException(ex);
             }
         }
@@ -68,12 +72,12 @@ public class ResourcesService {
                 lineContent = reader.readLine();
             }
         } catch (IOException ex) {
-            System.out.println(ex);
+            LOGGER.info("Exception encountered while matches processing", ex);
         } finally {
             try {
                 reader.close();
             } catch (IOException ex) {
-                System.out.println("Failed to close input reader");
+                LOGGER.info("Failed to close input reader");
                 throw new RuntimeException(ex);
             }
         }
