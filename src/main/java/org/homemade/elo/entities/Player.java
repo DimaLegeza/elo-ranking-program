@@ -1,24 +1,34 @@
 package org.homemade.elo.entities;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Getter
+@Entity
+@NoArgsConstructor
+@Table(name = "elo_player")
 public class Player {
-    private int id;
+    @Id
+    @GeneratedValue
+    private Long id;
     private String name;
     private int rank;
     private int gamesPlayed;
     private int wins;
     private int losses;
 
-    public Player(int id, String name) {
-        this.id = id;
+    public Player(String name) {
         this.name = name;
         // default rank
         this.rank = 1400;
     }
 
-    public Player setRank(final int rank) {
+    public Player withRank(final int rank) {
         this.rank = rank;
         return this;
     }
@@ -33,11 +43,24 @@ public class Player {
         return this;
     }
 
-    public void reset() {
-        this.gamesPlayed = 0;
-        this.wins = 0;
-        this.losses = 0;
-        this.rank = 1400;
+    public Player withGamesPlayed(int count) {
+        this.gamesPlayed = count;
+        return this;
+    }
+
+    public Player withWins(int count) {
+        this.wins = count;
+        return this;
+    }
+
+    public Player withLosses(int count) {
+        this.losses = count;
+        return this;
+    }
+
+    public Player withId(long id) {
+        this.id = id;
+        return this;
     }
 
 }

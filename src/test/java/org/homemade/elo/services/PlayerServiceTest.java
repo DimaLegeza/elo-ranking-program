@@ -1,59 +1,88 @@
 package org.homemade.elo.services;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.homemade.elo.entities.Match;
 import org.homemade.elo.entities.Player;
 import org.homemade.elo.enums.Order;
-import org.homemade.elo.util.RankingProvider;
+import org.homemade.elo.repo.MatchRepository;
+import org.homemade.elo.repo.PlayerRepository;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class PlayerServiceTest {
 	private PlayerService fixture;
 
 	@Before
 	public void setUp() {
-		ResourcesService resourcesService = mock(ResourcesService.class);
-		RankingProvider rankingProvider = mock(RankingProvider.class);
+		PlayerRepository playerRepo = mock(PlayerRepository.class);
+		MatchRepository matchRepo = mock(MatchRepository.class);
 
-		Player first = new Player(0, "Kate");
-		Player second= new Player(1, "Wendy");
-		Player third= new Player(2, "Gerard");
-		Player fourth= new Player(3, "Dima");
-		Map<Integer, Player> players = new HashMap<>();
-		players.put(first.getId(), first);
-		players.put(second.getId(), second);
-		players.put(third.getId(), third);
-		players.put(fourth.getId(), fourth);
+		Player first = new Player("Kate")
+				.withId(0)
+				.withRank(1416)
+				.withGamesPlayed(3)
+				.withWins(2)
+				.withLosses(1);
+		Player second = new Player("Wendy")
+				.withId(1)
+				.withRank(1361)
+				.withGamesPlayed(3)
+				.withWins(1)
+				.withLosses(3);
+		Player third = new Player("Gerard")
+				.withId(2)
+				.withRank(1440)
+				.withGamesPlayed(4)
+				.withWins(3)
+				.withLosses(1);
+		Player fourth = new Player("Dima")
+				.withId(3)
+				.withRank(1383)
+				.withGamesPlayed(3)
+				.withWins(1)
+				.withLosses(2);
+		List<Player> players = new ArrayList<>();
+		players.add(first);
+		players.add(second);
+		players.add(third);
+		players.add(fourth);
 
 		List<Match> matches = new ArrayList<>();
-		matches.add(new Match(0, 1));
-		matches.add(new Match(0, 3));
-		matches.add(new Match(1, 2));
-		matches.add(new Match(2, 0));
-		matches.add(new Match(3, 1));
-		matches.add(new Match(2, 1));
-		matches.add(new Match(2, 3));
+		Match firstMatch = new Match(0, 1);
+		Match secondMatch = new Match(0, 3);
+		Match thirdMatch = new Match(1, 2);
+		Match fourthMatch = new Match(2, 0);
+		Match fifthMatch = new Match(3, 1);
+		Match sixthMatch = new Match(2, 1);
+		Match seventhMatch = new Match(2, 3);
+		matches.add(firstMatch);
+		matches.add(secondMatch);
+		matches.add(thirdMatch);
+		matches.add(fourthMatch);
+		matches.add(fifthMatch);
+		matches.add(sixthMatch);
+		matches.add(seventhMatch);
 
-		when(resourcesService.getPlayers()).thenReturn(players);
-		when(resourcesService.getMatches()).thenReturn(matches);
+		when(playerRepo.findAll()).thenReturn(players);
+		when(playerRepo.findOne(eq(0L))).thenReturn(first);
+		when(playerRepo.findOne(eq(1L))).thenReturn(second);
+		when(playerRepo.findOne(eq(2L))).thenReturn(third);
+		when(playerRepo.findOne(eq(3L))).thenReturn(fourth);
+		when(matchRepo.findAll()).thenReturn(matches);
+		when(matchRepo.findByWinnerId(anyLong())).thenReturn(Arrays.asList(firstMatch, secondMatch));
+		when(matchRepo.findByLooserId(anyLong())).thenReturn(Arrays.asList(fourthMatch));
 
-		when(rankingProvider.calculateRank(any(Player.class), any(Player.class), anyInt())).thenCallRealMethod();
-		when(rankingProvider.getRankCoefficient(anyInt(), anyInt())).thenCallRealMethod();
-
-		this.fixture = new PlayerService(resourcesService, rankingProvider);
+		this.fixture = new PlayerService(playerRepo, matchRepo);
 	}
 
 	@Test
@@ -79,7 +108,7 @@ public class PlayerServiceTest {
 			"Gerard   : Score - 0.750 (rank - 1440)",
 			"Kate     : Score - 0.667 (rank - 1416)",
 			"Dima     : Score - 0.333 (rank - 1383)",
-			"Wendy    : Score - 0.250 (rank - 1361)"
+			"Wendy    : Score - 0.333 (rank - 1361)"
 		};
 		assertEquals(
 			Arrays.asList(ranks),

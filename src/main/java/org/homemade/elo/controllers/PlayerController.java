@@ -1,10 +1,6 @@
 package org.homemade.elo.controllers;
 
-import static org.homemade.elo.enums.Order.RANK;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
+import io.swagger.annotations.ApiOperation;
 import org.homemade.elo.entities.dto.PlayerDetails;
 import org.homemade.elo.entities.dto.PlayerWithProperty;
 import org.homemade.elo.enums.Order;
@@ -17,7 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.annotations.ApiOperation;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.homemade.elo.enums.Order.RANK;
 
 @RestController
 public class PlayerController {
@@ -50,7 +49,7 @@ public class PlayerController {
 
     @GetMapping("/players/{id}")
     @ApiOperation(value = "Get player details", notes = "Generate a report for each person, showing with whom they played and how they fared.")
-    public PlayerDetails getPlayerDetails(@PathVariable final int id) {
+    public PlayerDetails getPlayerDetails(@PathVariable final long id) {
         final PlayerDetails details = this.playerService.getPlayerDetails(id);
         LOGGER.info(details.formatString());
         return details;

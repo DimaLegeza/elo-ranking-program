@@ -4,15 +4,31 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "elo_match")
 public class Match {
-    private int winner;
-    private int looser;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    public Match(String first, String second) {
-        this(Integer.parseInt(first), Integer.parseInt(second));
+    private long winnerId;
+    private long looserId;
+
+    public Match(String winnerId, String looserId) {
+        this(Long.parseLong(winnerId), Long.parseLong(looserId));
+    }
+
+    public Match(long winnerId, long looserId) {
+        this.winnerId = winnerId;
+        this.looserId = looserId;
     }
 
 }

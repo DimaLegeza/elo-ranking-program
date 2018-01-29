@@ -1,21 +1,22 @@
 package org.homemade.elo.entities;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class PlayerTest {
 	private Player player;
 
 	@Before
 	public void setUp() {
-		this.player = new Player(0, "Kate");
+		this.player = new Player("Kate");
 	}
 
 	@Test
 	public void testDefaultPlayerCreation() {
-		assertEquals(0, this.player.getId());
+		assertNull(this.player.getId());
 		assertEquals("Kate", this.player.getName());
 		assertEquals(1400, this.player.getRank());
 		assertEquals(0, this.player.getGamesPlayed());

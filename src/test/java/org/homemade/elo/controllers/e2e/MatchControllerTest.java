@@ -1,14 +1,8 @@
 package org.homemade.elo.controllers.e2e;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-
 import org.homemade.elo.entities.Match;
 import org.homemade.elo.entities.dto.PlayerWithProperty;
 import org.homemade.elo.services.PlayerService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class MatchControllerTest {
@@ -30,11 +29,6 @@ public class MatchControllerTest {
 
 	@Autowired
 	private PlayerService playerService;
-
-	@Before
-	public void setUp() {
-		this.playerService.reset();
-	}
 
 	@Test
 	public void testMatchRegistration() {
@@ -46,7 +40,7 @@ public class MatchControllerTest {
 		assertEquals(1405, players.getBody().get(0).getRank());
 		assertEquals(1395, players.getBody().get(1).getRank());
 
-		Match match = new Match(1, 0);
+		Match match = new Match(2, 1);
 		ResponseEntity<Match> persisted = this.restTemplate.postForEntity("/match", match, Match.class);
 		assertEquals(HttpStatus.CREATED, persisted.getStatusCode());
 
