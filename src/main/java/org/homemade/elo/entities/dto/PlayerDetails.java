@@ -1,70 +1,67 @@
 package org.homemade.elo.entities.dto;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Getter
+@NoArgsConstructor
 public class PlayerDetails {
 	private static final String PLAYER_NAME_PREFIX = "---- ";
 	private static final String PLAYER_NAME_SUFFIX = " ----";
 	private static final String PLAYER_WON_MATCHES = "* Won matches against:";
 	private static final String PLAYER_LOST_MATCHES = "* Was beaten by:";
 	private String name;
-	private List<String> beatedBy = new ArrayList<>();
-	private List<String> lostFrom = new ArrayList<>();
+	private Map<Integer, OpponentPlayerDetails> beat = new HashMap<>();
+	private Map<Integer, OpponentPlayerDetails> lostFrom = new HashMap<>();
 
 	public PlayerDetails(String name) {
 		this.name = name;
 	}
 
-	public void addBeatedByCurrentPlayer(String name) {
-		this.beatedBy.add(name);
+	public void addBeatByCurrentPlayer(int id, String name) {
+		if (this.beat.containsKey(id)) {
+			this.beat.get(id).incMatches();
+		} else {
+			this.beat.put(id, new OpponentPlayerDetails(id, name));
+		}
 	}
 
-	public void addCurrentLostFromPlayer(String name) {
-		this.lostFrom.add(name);
+	public void addCurrentLostFromPlayer(int id, String name) {
+		if (this.lostFrom.containsKey(id)) {
+			this.lostFrom.get(id).incMatches();
+		} else {
+			this.lostFrom.put(id, new OpponentPlayerDetails(id, name));
+		}
 	}
 
-	@Override
-	public String toString() {
+	public String formatString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(PLAYER_NAME_PREFIX).append(this.name).append(PLAYER_NAME_SUFFIX);
-		if (this.beatedBy.size() > 0) {
+		if (this.beat.size() > 0) {
 			builder.append(System.lineSeparator());
 			builder.append(System.lineSeparator());
 			builder.append(PLAYER_WON_MATCHES).append(System.lineSeparator());
-			builder.append(this.playerWithMatchCounter(this.beatedBy));
+			for (final OpponentPlayerDetails details: this.beat.values()) {
+				builder.append(details.formatString()).append(System.lineSeparator());
+			}
 		}
 		if (this.lostFrom.size() > 0) {
-			if (beatedBy.size() == 0) {
+			if (beat.size() == 0) {
 				builder.append(System.lineSeparator());
 			}
 			builder.append(System.lineSeparator());
 			builder.append(PLAYER_LOST_MATCHES).append(System.lineSeparator());
-			builder.append(this.playerWithMatchCounter(this.lostFrom));
+			for (final OpponentPlayerDetails details: this.lostFrom.values()) {
+				builder.append(details.formatString()).append(System.lineSeparator());
+			}
 		}
 		return builder.toString();
 	}
 
-	private String playerWithMatchCounter(List<String> players) {
-		Map<String, Integer> playerWithMatch = new HashMap<>();
-		for (String player: players) {
-			if (playerWithMatch.containsKey(player)) {
-				playerWithMatch.put(player, playerWithMatch.get(player) + 1);
-			} else {
-				playerWithMatch.put(player, 1);
-			}
-		}
-		StringBuilder builder = new StringBuilder();
-		for (Entry<String, Integer> playerEntry: playerWithMatch.entrySet()) {
-			builder
-				.append("  ")
-				.append(playerEntry.getKey())
-				.append(playerEntry.getValue() > 1 ? String.format(" (%d times)", playerEntry.getValue()) : "")
-				.append(System.lineSeparator());
-		}
-		return builder.toString();
-	}
 }

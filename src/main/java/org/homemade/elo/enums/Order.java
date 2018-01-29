@@ -11,4 +11,14 @@ public enum Order {
 	public String getName() {
 		return this.orderName;
 	}
+
+	public static Order fromString(String orderStr) {
+		if (orderStr != null) {
+			try {
+				return Order.valueOf(orderStr.trim().toUpperCase());
+			} catch(IllegalArgumentException ex) {
+			}
+		}
+		return Order.RANK;
+	}
 }

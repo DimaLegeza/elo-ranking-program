@@ -1,19 +1,24 @@
 package org.homemade.elo.entities.dto;
 
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
-public class BasePlayer {
+@NoArgsConstructor
+class BasePlayer {
 	protected static final String MESSAGE = "%s: %s - %d";
 	private String name;
 	private int rank;
 
-	public BasePlayer(String name, int rank) {
+	protected BasePlayer(String name, int rank) {
 		this.name = name;
 		this.rank = rank;
 	}
 
-	public String formatString(int nameLength) {
+	protected String formatString(int nameLength) {
 		return String.format(BasePlayer.MESSAGE, this.reformatName(nameLength), "Rank", this.rank);
 	}
 

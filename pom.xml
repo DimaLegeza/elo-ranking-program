@@ -60,6 +60,13 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!--Spring testing for E2E-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
