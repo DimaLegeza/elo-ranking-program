@@ -142,7 +142,7 @@ public class PlayerServiceTest {
 
 	@Test
 	public void getUserDetails_existingUser() {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder(System.lineSeparator());
 		sb.append("---- Kate ----")
 			.append(System.lineSeparator())
 			.append(System.lineSeparator())
@@ -162,7 +162,9 @@ public class PlayerServiceTest {
 
 	@Test
 	public void getUserDetails_notExistingUser() {
-		assertEquals("---- User not found ----", this.fixture.getPlayerDetails(10).formatString());
+		StringBuilder sb = new StringBuilder(System.lineSeparator());
+		sb.append("---- User not found ----");
+		assertEquals(sb.toString(), this.fixture.getPlayerDetails(10).formatString());
 	}
 
 

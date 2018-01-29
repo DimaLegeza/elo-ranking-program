@@ -15,7 +15,9 @@ public class PlayerDetailsTest {
 
 	@Test
 	public void shouldConstructProperDetails() {
-		assertEquals("---- Kate ----", this.details.formatString());
+		StringBuilder sb = new StringBuilder(System.lineSeparator());
+		sb.append("---- Kate ----");
+		assertEquals(sb.toString(), this.details.formatString());
 	}
 
 	@Test
@@ -25,7 +27,7 @@ public class PlayerDetailsTest {
 		this.details.addCurrentLostFromPlayer(2, "Miriam");
 		this.details.addCurrentLostFromPlayer(0, "Jorn");
 
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder(System.lineSeparator());
 		sb.append("---- Kate ----")
 			.append(System.lineSeparator())
 			.append(System.lineSeparator())
@@ -47,7 +49,7 @@ public class PlayerDetailsTest {
 		this.details.addBeatByCurrentPlayer(2, "Miriam");
 		this.details.addBeatByCurrentPlayer(0, "Jorn");
 
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder(System.lineSeparator());
 		sb.append("---- Kate ----")
 			.append(System.lineSeparator())
 			.append(System.lineSeparator())
@@ -77,7 +79,7 @@ public class PlayerDetailsTest {
 		this.details.addCurrentLostFromPlayer(6, "Moises");
 		this.details.addCurrentLostFromPlayer(6, "Moises");
 
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder(System.lineSeparator());
 		sb.append("---- Kate ----")
 			.append(System.lineSeparator())
 			.append(System.lineSeparator())
