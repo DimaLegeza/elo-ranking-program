@@ -26,11 +26,6 @@ public class PlayerController {
     @Autowired
     private PlayerService playerService;
 
-    @GetMapping("/health-check")
-    public String health() {
-        return "Running";
-    }
-
     @GetMapping("/players")
     @ApiOperation(value = "Get players ordered by rank", notes = "Scores each player based on the games played")
     public List<PlayerWithProperty> getPlayers() {

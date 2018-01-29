@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.homemade.elo.entities.dto.PlayerDetails;
 import org.homemade.elo.entities.dto.PlayerWithProperty;
+import org.homemade.elo.services.PlayerService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +27,12 @@ public class PlayerControllerTest {
 	@Autowired
 	private TestRestTemplate restTemplate;
 
-	@Test
-	public void testHealth() throws Exception {
-		ResponseEntity<String> healthEntity = this.restTemplate.getForEntity("/health-check", String.class);
-		assertEquals(HttpStatus.OK, healthEntity.getStatusCode());
-		assertNotNull(healthEntity.getBody());
-		assertEquals("Running", healthEntity.getBody());
+	@Autowired
+	private PlayerService playerService;
+
+	@Before
+	public void setUp() {
+		this.playerService.reset();
 	}
 
 	@Test

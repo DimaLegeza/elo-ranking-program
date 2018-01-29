@@ -32,4 +32,12 @@ public class Player {
         }
         return this;
     }
+
+    public void reset() {
+        this.gamesPlayed = 0;
+        this.wins = 0;
+        this.losses = 0;
+        this.rank = 1400;
+    }
+
 }

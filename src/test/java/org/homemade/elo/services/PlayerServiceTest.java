@@ -51,6 +51,7 @@ public class PlayerServiceTest {
 		when(resourcesService.getMatches()).thenReturn(matches);
 
 		when(rankingProvider.calculateRank(any(Player.class), any(Player.class), anyInt())).thenCallRealMethod();
+		when(rankingProvider.getRankCoefficient(anyInt(), anyInt())).thenCallRealMethod();
 
 		this.fixture = new PlayerService(resourcesService, rankingProvider);
 	}

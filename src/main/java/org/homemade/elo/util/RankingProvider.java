@@ -19,7 +19,7 @@ public class RankingProvider {
 	 * Using FIDE standards
 	 * https://en.wikipedia.org/wiki/Elo_rating_system
 	 */
-	private int getRankCoefficient(int currentRank, int gamesPlayed) {
+	public int getRankCoefficient(int currentRank, int gamesPlayed) {
 		if (gamesPlayed < 30) {
 			return 40;
 		} else if (currentRank >= 2400) {

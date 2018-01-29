@@ -65,15 +65,28 @@ public class PlayerService {
 		return players.stream().mapToInt(player -> player.getName().length()).max().getAsInt() + 3;
 	}
 
-	private void calculateRanks() {
+	public Match registerMatch(Match match) {
 		Map<Integer, Player> players = this.resourcesService.getPlayers();
-		for (final Match match: this.resourcesService.getMatches()) {
+		if (players.containsKey(match.getWinner()) && players.containsKey(match.getLooser())) {
 			Player winner = players.get(match.getWinner());
 			Player looser = players.get(match.getLooser());
 			int newWinnerRank = this.rankingProvider.calculateRank(winner, looser, 1);
 			int newLooserRank = this.rankingProvider.calculateRank(looser, winner, 0);
 			winner.setRank(newWinnerRank).incrementGames(true);
 			looser.setRank(newLooserRank).incrementGames(false);
+			return match;
+		}
+		return null;
+	}
+
+	public void reset() {
+		this.resourcesService.getPlayers().values().forEach(Player::reset);
+		this.calculateRanks();
+	}
+
+	private void calculateRanks() {
+		for (final Match match: this.resourcesService.getMatches()) {
+			this.registerMatch(match);
 		}
 	}
 

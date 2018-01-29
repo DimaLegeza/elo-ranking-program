@@ -1,10 +1,10 @@
 package org.homemade.elo.util;
 
+import static org.junit.Assert.assertEquals;
+
 import org.homemade.elo.entities.Player;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 public class RankingProviderTest {
 
@@ -53,5 +53,13 @@ public class RankingProviderTest {
 		assertEquals(1454, first.getRank());
 		assertEquals(1346, second.getRank());
 
+	}
+
+	@Test
+	public void testRankCoeff() {
+		assertEquals(40, this.rankingProvider.getRankCoefficient(1400, 2));
+		assertEquals(40, this.rankingProvider.getRankCoefficient(3000, 2));
+		assertEquals(20, this.rankingProvider.getRankCoefficient(1800, 30));
+		assertEquals(10, this.rankingProvider.getRankCoefficient(2500, 31));
 	}
 }
