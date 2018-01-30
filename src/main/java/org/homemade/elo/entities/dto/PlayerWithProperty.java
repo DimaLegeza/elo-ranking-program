@@ -1,11 +1,9 @@
 package org.homemade.elo.entities.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import org.homemade.elo.enums.Order;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.homemade.elo.enums.Order;
 
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"propertyName", "nameLength"})
 @Getter

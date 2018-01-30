@@ -1,22 +1,16 @@
 package org.homemade.elo.services;
 
 import com.google.common.collect.ImmutableList;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.homemade.elo.entities.Player;
 import org.homemade.elo.entities.dto.BasePlayer;
 import org.homemade.elo.entities.dto.ChampionshipBucket;
 import org.homemade.elo.entities.dto.Forecast;
 import org.homemade.elo.repo.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 @Service
 public class ForecastingService {
@@ -46,32 +40,36 @@ public class ForecastingService {
 	}
 
 	public Forecast forecastMatches() {
-		Map<ChampionshipBucket, List<Pair<BasePlayer, BasePlayer>>> forecast = new HashMap<>();
-		Map<ChampionshipBucket, List<Player>> playersPerBucket = new HashMap<>();
+		Map<ChampionshipBucket, List<List<BasePlayer>>> forecast = new HashMap<>();
+		Map<ChampionshipBucket, List<BasePlayer>> playersPerBucket = new HashMap<>();
 		Iterable<Player> repoPlayers = this.playerRepo.findAll();
 		List<Player> players = new ArrayList<>();
 		repoPlayers.forEach(players::add);
 		Collections.shuffle(players);
-		players.forEach(player -> {
+		players
+			.stream()
+			.map(player -> new BasePlayer(player.getName(), player.getRank()))
+			.forEach(player -> {
 			for (ChampionshipBucket bucket: this.championshipBuckets) {
 				if (bucket.playerMatches(player)) {
 					if (playersPerBucket.containsKey(bucket)) {
 						playersPerBucket.get(bucket).add(player);
 					} else {
-						List<Player> playerList = new ArrayList<>();
+						List<BasePlayer> playerList = new ArrayList<>();
 						playerList.add(player);
 						playersPerBucket.put(bucket, playerList);
 					}
 				}
 			}
 		});
-		for (Entry<ChampionshipBucket, List<Player>> entry: playersPerBucket.entrySet()) {
+		for (Entry<ChampionshipBucket, List<BasePlayer>> entry: playersPerBucket.entrySet()) {
 			if (entry.getValue().size() > 1) {
-				List<Pair<BasePlayer, BasePlayer>> pairs = new ArrayList<>();
+				List<List<BasePlayer>> pairs = new ArrayList<>();
 				for (int i = 0; i < Math.floor(entry.getValue().size() / 2); i += 2) {
-					Player first = entry.getValue().get(i);
-					Player second = entry.getValue().get(i + 1);
-					pairs.add(Pair.of(new BasePlayer(first.getName(), first.getRank()), new BasePlayer(second.getName(), second.getRank())));
+					List<BasePlayer> pair = new ArrayList<>();
+					pair.add(entry.getValue().get(i));
+					pair.add(entry.getValue().get(i + 1));
+					pairs.add(pair);
 				}
 				forecast.put(entry.getKey(), pairs);
 			}

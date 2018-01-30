@@ -1,12 +1,5 @@
 package org.homemade.elo.services;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.io.IOException;
-
 import org.homemade.elo.entities.Match;
 import org.homemade.elo.entities.Player;
 import org.homemade.elo.repo.MatchRepository;
@@ -14,6 +7,11 @@ import org.homemade.elo.repo.PlayerRepository;
 import org.homemade.elo.util.FileReaderUtil;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 public class ResourcesInitializingServiceTest {
 	private PlayerRepository playerRepo;

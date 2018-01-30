@@ -2,7 +2,6 @@ package org.homemade.elo.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.homemade.elo.entities.dto.FormattedOut;
 import org.homemade.elo.util.OutputStreamProvider;
 import org.slf4j.Logger;

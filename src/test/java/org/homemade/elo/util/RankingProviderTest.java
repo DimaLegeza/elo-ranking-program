@@ -1,10 +1,10 @@
 package org.homemade.elo.util;
 
-import static org.junit.Assert.assertEquals;
-
 import org.homemade.elo.entities.Player;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class RankingProviderTest {
 

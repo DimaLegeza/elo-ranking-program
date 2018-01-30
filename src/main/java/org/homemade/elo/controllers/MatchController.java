@@ -1,5 +1,6 @@
 package org.homemade.elo.controllers;
 
+import io.swagger.annotations.ApiOperation;
 import org.homemade.elo.entities.Match;
 import org.homemade.elo.entities.dto.Forecast;
 import org.homemade.elo.services.ForecastingService;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class MatchController {

@@ -1,19 +1,19 @@
 package org.homemade.elo.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
 @Component
 public class OutputStreamProvider {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OutputStreamProvider.class);
-	private Pattern FILE_SYSTEM_REGEX = Pattern.compile("([a-zA-Z]:)?(\\\\[a-zA-Z0-9_.-]+)+\\\\?");
+	private Pattern FILE_SYSTEM_REGEX = Pattern.compile("([a-zA-Z]:)?(/[a-zA-Z0-9_.-]+)+/?");
 	private boolean system = true;
 	private PrintWriter writer;
 
@@ -27,15 +27,15 @@ public class OutputStreamProvider {
 			this.recreateWriter(System.out);
 			this.system = true;
 			return "System.out";
-		} else if (this.FILE_SYSTEM_REGEX.matcher(destination).matches()) {
+		} else if (this.FILE_SYSTEM_REGEX.matcher(destination.replace("\\", "/")).matches()) {
 			this.closePrevious();
 			try {
-				File fileDestination = new File(destination);
+				File fileDestination = new File(destination.replace("\\", "/"));
 				fileDestination.getParentFile().mkdirs();
 				fileDestination.createNewFile(); //will do nothing if file already exists
 				this.recreateWriter(new FileOutputStream(fileDestination, true));
 				this.system = false;
-				return destination;
+				return destination.replace("\\", "/");
 			} catch (Exception e) {
 				LOGGER.error("Errors while working with file", e);
 			}

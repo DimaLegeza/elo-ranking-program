@@ -1,19 +1,16 @@
 package org.homemade.elo.services;
 
-import static org.junit.Assert.assertFalse;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import org.homemade.elo.entities.dto.FormattedOut;
 import org.homemade.elo.entities.dto.PlayerWithProperty;
 import org.homemade.elo.enums.Order;
 import org.homemade.elo.util.OutputStreamProvider;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 public class SerializationServiceTest {
 	private FormattedOut entity;

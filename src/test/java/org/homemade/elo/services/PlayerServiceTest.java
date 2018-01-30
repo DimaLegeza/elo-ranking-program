@@ -1,19 +1,5 @@
 package org.homemade.elo.services;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.homemade.elo.entities.Match;
 import org.homemade.elo.entities.Player;
 import org.homemade.elo.entities.dto.PlayerRegistration;
@@ -23,6 +9,17 @@ import org.homemade.elo.repo.MatchRepository;
 import org.homemade.elo.repo.PlayerRepository;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 public class PlayerServiceTest {
 	private PlayerService fixture;

@@ -1,30 +1,30 @@
 package org.homemade.elo.entities.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.homemade.elo.entities.dto.helper.BasePlayerDeserializer;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.springframework.data.util.Pair;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class Forecast implements FormattedOut {
-	private Map<ChampionshipBucket, List<Pair<BasePlayer, BasePlayer>>> championshipClasses;
+	@JsonDeserialize(keyUsing = BasePlayerDeserializer.class)
+	private Map<ChampionshipBucket, List<List<BasePlayer>>> championshipClasses;
 
 	@Override
 	public String formatString() {
 		StringBuilder sb = new StringBuilder("---- CHAMPIONSHIPS SUGGESTED ----")
 			.append(System.lineSeparator());
-		for (Entry<ChampionshipBucket, List<Pair<BasePlayer, BasePlayer>>> bucket: this.championshipClasses.entrySet()) {
+		for (Entry<ChampionshipBucket, List<List<BasePlayer>>> bucket: this.championshipClasses.entrySet()) {
 			sb
 				.append(System.lineSeparator())
 				.append("  * ")
@@ -33,13 +33,14 @@ public class Forecast implements FormattedOut {
 				.append("    ")
 				.append(String.join("", Collections.nCopies(bucket.getKey().toString().length(), "-")))
 				.append(System.lineSeparator());
-			for (Pair<BasePlayer, BasePlayer> pair: bucket.getValue()) {
+			// would be two elements only
+			for (List<BasePlayer> pair: bucket.getValue()) {
 				sb
 					.append(String.format("    %s (rank: %d) - %s (rank: %d)",
-						pair.getFirst().getName(),
-						pair.getFirst().getRank(),
-						pair.getSecond().getName(),
-						pair.getSecond().getRank())
+						pair.get(0).getName(),
+						pair.get(0).getRank(),
+						pair.get(1).getName(),
+						pair.get(1).getRank())
 					)
 					.append(System.lineSeparator());
 			}

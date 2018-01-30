@@ -1,9 +1,7 @@
 package org.homemade.elo.controllers;
 
-import static org.homemade.elo.enums.Order.RANK;
-
-import java.util.List;
-
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.homemade.elo.entities.Player;
 import org.homemade.elo.entities.dto.PlayerDetails;
 import org.homemade.elo.entities.dto.PlayerRegistration;
@@ -14,15 +12,11 @@ import org.homemade.elo.services.SerializationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import java.util.List;
+
+import static org.homemade.elo.enums.Order.RANK;
 
 @RestController
 public class PlayerController {

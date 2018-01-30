@@ -1,9 +1,9 @@
 package org.homemade.elo.util;
 
+import org.springframework.stereotype.Component;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-
-import org.springframework.stereotype.Component;
 
 @Component
 public class FileReaderUtil {

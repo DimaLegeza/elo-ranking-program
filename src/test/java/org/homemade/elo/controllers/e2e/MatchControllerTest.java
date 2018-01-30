@@ -1,14 +1,8 @@
 package org.homemade.elo.controllers.e2e;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.StreamSupport;
-
 import org.homemade.elo.entities.Match;
 import org.homemade.elo.entities.Player;
+import org.homemade.elo.entities.dto.Forecast;
 import org.homemade.elo.entities.dto.PlayerWithProperty;
 import org.homemade.elo.repo.MatchRepository;
 import org.homemade.elo.repo.PlayerRepository;
@@ -23,6 +17,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.StreamSupport;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -74,8 +75,17 @@ public class MatchControllerTest {
 
 	@Test
 	public void testFetchForecast() {
-		ResponseEntity<Object> forecast = this.restTemplate.getForEntity("/match-forecast", Object.class);
+		Player first = new Player("Diana").withRank(1480);
+		Player second = new Player("Anton").withRank(1320);
+		Player firstFromRepo = this.playerRepository.save(first);
+		Player secondFromRepo = this.playerRepository.save(second);
+
+		ResponseEntity<Forecast> forecast = this.restTemplate.getForEntity("/match-forecast", Forecast.class);
 		assertEquals(HttpStatus.OK, forecast.getStatusCode());
 		assertNotNull(forecast.getBody());
+		assertEquals(2, forecast.getBody().getChampionshipClasses().size());
+		// cleanup
+		this.playerRepository.delete(firstFromRepo);
+		this.playerRepository.delete(secondFromRepo);
 	}
 }

@@ -1,9 +1,6 @@
 package org.homemade.elo.entities.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import org.homemade.elo.entities.Player;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +20,7 @@ public class ChampionshipBucket {
 		this.name = name;
 	}
 
-	public boolean playerMatches(Player player) {
+	public boolean playerMatches(BasePlayer player) {
 		return lowLimit <= player.getRank() && upperLimit > player.getRank();
 	}
 

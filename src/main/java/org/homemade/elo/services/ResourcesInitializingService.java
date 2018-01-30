@@ -1,8 +1,5 @@
 package org.homemade.elo.services;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
 import org.homemade.elo.entities.Match;
 import org.homemade.elo.entities.Player;
 import org.homemade.elo.repo.MatchRepository;
@@ -12,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 
 @Service
 public class ResourcesInitializingService {

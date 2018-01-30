@@ -1,9 +1,9 @@
 package org.homemade.elo.entities.dto;
 
-import static org.junit.Assert.assertEquals;
-
 import org.homemade.elo.enums.Order;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class PlayerWithPropertyTest {
 
