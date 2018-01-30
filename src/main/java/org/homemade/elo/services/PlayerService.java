@@ -26,12 +26,14 @@ public class PlayerService {
 	}
 
 	public List<PlayerWithProperty> getPlayers(Order order) {
+		int maxNameLength = this.getPlayerNameMaxLength();
 		return StreamSupport
 				.stream(this.playerRepo.findAll().spliterator(), false)
 				.map(player -> new PlayerWithProperty(
 					player.getName(),
 					player.getRank(),
 					this.playerProperty(player, order),
+					maxNameLength,
 					order)
 				)
 				.sorted(Comparator

@@ -3,14 +3,12 @@ package org.homemade.elo.controllers;
 import static org.homemade.elo.enums.Order.RANK;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.homemade.elo.entities.dto.PlayerDetails;
 import org.homemade.elo.entities.dto.PlayerWithProperty;
 import org.homemade.elo.enums.Order;
 import org.homemade.elo.services.PlayerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.homemade.elo.services.SerializationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,19 +20,17 @@ import io.swagger.annotations.ApiParam;
 
 @RestController
 public class PlayerController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PlayerController.class);
-
     @Autowired
     private PlayerService playerService;
+    @Autowired
+    private SerializationService serializationService;
 
     @GetMapping("/players")
     @ApiOperation(value = "Get players ordered by rank", notes = "Scores each player based on the games played")
     public List<PlayerWithProperty> getPlayers() {
         List<PlayerWithProperty> res = this.playerService.getPlayers(RANK);
-        res.stream()
-            .map(player -> player.formatString(this.playerService.getPlayerNameMaxLength()))
-            .collect(Collectors.toList())
-            .forEach(LOGGER::info);
+        res.forEach(this.serializationService::publish);
+        this.serializationService.publishLineEnd();
         return res;
     }
 
@@ -43,10 +39,8 @@ public class PlayerController {
     public List<PlayerWithProperty> getNames(@ApiParam(value = "[RANK, SCORE, WINS, LOSSES]")
                                              @RequestParam(value = "order", defaultValue = "RANK") String orderString) {
         List<PlayerWithProperty> res = this.playerService.getPlayers(Order.fromString(orderString));
-        res.stream()
-            .map(player -> player.formatString(this.playerService.getPlayerNameMaxLength()))
-            .collect(Collectors.toList())
-            .forEach(LOGGER::info);
+        res.forEach(this.serializationService::publish);
+        this.serializationService.publishLineEnd();
         return res;
     }
 
@@ -54,7 +48,8 @@ public class PlayerController {
     @ApiOperation(value = "Get player details", notes = "Generate a report for each person, showing with whom they played and how they fared.")
     public PlayerDetails getPlayerDetails(@PathVariable final long id) {
         final PlayerDetails details = this.playerService.getPlayerDetails(id);
-        LOGGER.info(details.formatString());
+        this.serializationService.publish(details);
+        this.serializationService.publishLineEnd();
         return details;
     }
 

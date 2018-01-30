@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @NoArgsConstructor
-public class PlayerDetails {
+public class PlayerDetails implements FormattedOut {
 	private static final String PLAYER_NAME_PREFIX = "---- ";
 	private static final String PLAYER_NAME_SUFFIX = " ----";
 	private static final String PLAYER_WON_MATCHES = "* Won matches against:";

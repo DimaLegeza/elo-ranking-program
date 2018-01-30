@@ -56,9 +56,7 @@ public class ResourcesInitializingService {
         } finally {
             try {
                 reader.close();
-            } catch (IOException ex) {
-                LOGGER.error("Failed to close input reader");
-            }
+            } catch (IOException ignored) {}
         }
     }
 
@@ -73,9 +71,7 @@ public class ResourcesInitializingService {
         } finally {
             try {
                 reader.close();
-            } catch (IOException ex) {
-                LOGGER.error("Failed to close input reader");
-            }
+            } catch (IOException ignored) {}
         }
     }
 
