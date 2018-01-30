@@ -1,9 +1,12 @@
 package org.homemade.elo.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ import java.util.stream.Collectors;
 
 import org.homemade.elo.entities.Match;
 import org.homemade.elo.entities.Player;
+import org.homemade.elo.entities.dto.PlayerRegistration;
 import org.homemade.elo.entities.dto.PlayerWithProperty;
 import org.homemade.elo.enums.Order;
 import org.homemade.elo.repo.MatchRepository;
@@ -22,10 +26,11 @@ import org.junit.Test;
 
 public class PlayerServiceTest {
 	private PlayerService fixture;
+	private PlayerRepository playerRepo;
 
 	@Before
 	public void setUp() {
-		PlayerRepository playerRepo = mock(PlayerRepository.class);
+		this.playerRepo = mock(PlayerRepository.class);
 		MatchRepository matchRepo = mock(MatchRepository.class);
 
 		Player first = new Player("Kate")
@@ -74,16 +79,16 @@ public class PlayerServiceTest {
 		matches.add(sixthMatch);
 		matches.add(seventhMatch);
 
-		when(playerRepo.findAll()).thenReturn(players);
-		when(playerRepo.findOne(eq(0L))).thenReturn(first);
-		when(playerRepo.findOne(eq(1L))).thenReturn(second);
-		when(playerRepo.findOne(eq(2L))).thenReturn(third);
-		when(playerRepo.findOne(eq(3L))).thenReturn(fourth);
+		when(this.playerRepo.findAll()).thenReturn(players);
+		when(this.playerRepo.findOne(eq(0L))).thenReturn(first);
+		when(this.playerRepo.findOne(eq(1L))).thenReturn(second);
+		when(this.playerRepo.findOne(eq(2L))).thenReturn(third);
+		when(this.playerRepo.findOne(eq(3L))).thenReturn(fourth);
 		when(matchRepo.findAll()).thenReturn(matches);
 		when(matchRepo.findByWinnerId(anyLong())).thenReturn(Arrays.asList(firstMatch, secondMatch));
 		when(matchRepo.findByLooserId(anyLong())).thenReturn(Arrays.asList(fourthMatch));
 
-		this.fixture = new PlayerService(playerRepo, matchRepo);
+		this.fixture = new PlayerService(this.playerRepo, matchRepo);
 	}
 
 	@Test
@@ -196,6 +201,13 @@ public class PlayerServiceTest {
 		StringBuilder sb = new StringBuilder(System.lineSeparator());
 		sb.append("---- User not found ----");
 		assertEquals(sb.toString(), this.fixture.getPlayerDetails(10).formatString());
+	}
+
+	@Test
+	public void shouldCreateUser() {
+		PlayerRegistration newPlayer = new PlayerRegistration("Frans");
+		this.fixture.create(newPlayer);
+		verify(this.playerRepo, times(1)).save(any(Player.class));
 	}
 
 

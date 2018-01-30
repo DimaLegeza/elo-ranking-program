@@ -7,6 +7,7 @@ import java.util.stream.StreamSupport;
 
 import org.homemade.elo.entities.Player;
 import org.homemade.elo.entities.dto.PlayerDetails;
+import org.homemade.elo.entities.dto.PlayerRegistration;
 import org.homemade.elo.entities.dto.PlayerWithProperty;
 import org.homemade.elo.enums.Order;
 import org.homemade.elo.repo.MatchRepository;
@@ -61,6 +62,10 @@ public class PlayerService {
 		return StreamSupport
 				.stream(this.playerRepo.findAll().spliterator(), false)
 				.mapToInt(player -> player.getName().length()).max().getAsInt() + 3;
+	}
+
+	public Player create(PlayerRegistration player) {
+		return this.playerRepo.save(new Player(player.getName()));
 	}
 
 

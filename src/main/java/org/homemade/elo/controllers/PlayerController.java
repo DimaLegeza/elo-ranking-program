@@ -4,14 +4,20 @@ import static org.homemade.elo.enums.Order.RANK;
 
 import java.util.List;
 
+import org.homemade.elo.entities.Player;
 import org.homemade.elo.entities.dto.PlayerDetails;
+import org.homemade.elo.entities.dto.PlayerRegistration;
 import org.homemade.elo.entities.dto.PlayerWithProperty;
 import org.homemade.elo.enums.Order;
 import org.homemade.elo.services.PlayerService;
 import org.homemade.elo.services.SerializationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,6 +57,15 @@ public class PlayerController {
         this.serializationService.publish(details);
         this.serializationService.publishLineEnd();
         return details;
+    }
+
+    @PostMapping("/players")
+    @ApiOperation(value = "Create player", notes = "Uses default setup: score is pre-set to 1400, number of games is 0")
+    public ResponseEntity<Player> create(@RequestBody PlayerRegistration player) {
+        Player newPlayer = this.playerService.create(player);
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(newPlayer);
     }
 
 }

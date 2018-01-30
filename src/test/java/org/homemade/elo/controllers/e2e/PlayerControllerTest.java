@@ -5,8 +5,11 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
+import org.homemade.elo.entities.Player;
 import org.homemade.elo.entities.dto.PlayerDetails;
+import org.homemade.elo.entities.dto.PlayerRegistration;
 import org.homemade.elo.entities.dto.PlayerWithProperty;
+import org.homemade.elo.repo.PlayerRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class PlayerControllerTest {
 	@Autowired
 	private TestRestTemplate restTemplate;
+	@Autowired
+	private PlayerRepository playerRepository;
 
 	@Test
 	public void testPlayers() throws Exception {
@@ -128,6 +133,20 @@ public class PlayerControllerTest {
 		assertEquals("Melodie", secondPlayerDetails.getBody().getName());
 		assertEquals(2, secondPlayerDetails.getBody().getBeat().get(1L).getMatches());
 		assertEquals(3, secondPlayerDetails.getBody().getLostFrom().get(1L).getMatches());
+	}
+
+	@Test
+	public void testPlayerCreation() {
+		PlayerRegistration newPlayer = new PlayerRegistration("Frans");
+		ResponseEntity<Player> persisted = this.restTemplate.postForEntity("/players", newPlayer, Player.class);
+		assertEquals(HttpStatus.CREATED, persisted.getStatusCode());
+		assertEquals("Frans", persisted.getBody().getName());
+		assertEquals(1400, persisted.getBody().getRank());
+		assertEquals(0, persisted.getBody().getGamesPlayed());
+		assertEquals(0, persisted.getBody().getWins());
+		assertEquals(0, persisted.getBody().getLosses());
+		// cleanup
+		this.playerRepository.delete(persisted.getBody());
 	}
 
 }
