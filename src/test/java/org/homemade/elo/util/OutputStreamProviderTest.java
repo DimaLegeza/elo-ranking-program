@@ -1,13 +1,15 @@
 package org.homemade.elo.util;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class OutputStreamProviderTest {
 
@@ -16,7 +18,7 @@ public class OutputStreamProviderTest {
 		File temp = createTempFile();
 		OutputStreamProvider provider = new OutputStreamProvider();
 		String resetStream = provider.resetStream(temp.getCanonicalPath());
-		assertEquals(temp.getCanonicalPath(), resetStream);
+		assertEquals(temp.getCanonicalPath().replace("\\", "/"), resetStream);
 
 		provider.println("Some bla").flush();
 		String res = "Some bla" + System.lineSeparator();
@@ -41,7 +43,7 @@ public class OutputStreamProviderTest {
 		File temp = createTempFile();
 		OutputStreamProvider provider = new OutputStreamProvider();
 		String resetStream = provider.resetStream(temp.getCanonicalPath());
-		assertEquals(temp.getCanonicalPath(), resetStream);
+		assertEquals(temp.getCanonicalPath().replace("\\", "/"), resetStream);
 		assertFalse(provider.isSystem());
 
 		String systemStream = provider.resetStream("");
@@ -54,7 +56,7 @@ public class OutputStreamProviderTest {
 		File temp = createTempFile();
 		OutputStreamProvider provider = new OutputStreamProvider();
 		String resetStream = provider.resetStream(temp.getCanonicalPath());
-		assertEquals(temp.getCanonicalPath(), resetStream);
+		assertEquals(temp.getCanonicalPath().replace("\\", "/"), resetStream);
 		assertFalse(provider.isSystem());
 
 		String systemStream = provider.resetStream(null);
