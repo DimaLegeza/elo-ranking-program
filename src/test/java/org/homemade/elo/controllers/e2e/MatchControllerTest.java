@@ -1,8 +1,17 @@
 package org.homemade.elo.controllers.e2e;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 import org.homemade.elo.entities.Match;
+import org.homemade.elo.entities.Player;
 import org.homemade.elo.entities.dto.PlayerWithProperty;
-import org.homemade.elo.services.PlayerService;
+import org.homemade.elo.repo.MatchRepository;
+import org.homemade.elo.repo.PlayerRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class MatchControllerTest {
@@ -28,10 +32,15 @@ public class MatchControllerTest {
 	private TestRestTemplate restTemplate;
 
 	@Autowired
-	private PlayerService playerService;
+	private PlayerRepository playerRepository;
+	@Autowired
+	private MatchRepository matchRepository;
 
 	@Test
 	public void testMatchRegistration() {
+		final List<Player> existing = new ArrayList<>();
+		StreamSupport.stream(this.playerRepository.findAll().spliterator(), false).forEach(existing::add);
+
 		ParameterizedTypeReference<List<PlayerWithProperty>> responseType = new ParameterizedTypeReference<List<PlayerWithProperty>>() {};
 		ResponseEntity<List<PlayerWithProperty>> players = this.restTemplate.exchange("/players", HttpMethod.GET, null, responseType);
 		assertEquals(HttpStatus.OK, players.getStatusCode());
@@ -50,6 +59,10 @@ public class MatchControllerTest {
 		assertEquals(2, updatedPlayers.getBody().size());
 		assertEquals(1416, updatedPlayers.getBody().get(0).getRank());
 		assertEquals(1384, updatedPlayers.getBody().get(1).getRank());
+
+		// cleanup
+		this.matchRepository.delete(persisted.getBody());
+		this.playerRepository.save(existing);
 	}
 
 	@Test

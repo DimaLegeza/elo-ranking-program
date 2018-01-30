@@ -1,6 +1,5 @@
 package org.homemade.elo.controllers;
 
-import io.swagger.annotations.ApiOperation;
 import org.homemade.elo.entities.Match;
 import org.homemade.elo.services.MatchRegistrationService;
 import org.slf4j.Logger;
@@ -11,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class MatchController {

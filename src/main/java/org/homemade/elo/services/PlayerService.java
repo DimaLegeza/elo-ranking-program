@@ -1,5 +1,10 @@
 package org.homemade.elo.services;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.homemade.elo.entities.Player;
 import org.homemade.elo.entities.dto.PlayerDetails;
 import org.homemade.elo.entities.dto.PlayerWithProperty;
@@ -8,11 +13,6 @@ import org.homemade.elo.repo.MatchRepository;
 import org.homemade.elo.repo.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class PlayerService {
