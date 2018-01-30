@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @NoArgsConstructor
-class BasePlayer {
+public class BasePlayer {
 	protected static final String MESSAGE = "%s: %s - %d";
 	private String name;
 	private int rank;
@@ -18,6 +18,10 @@ class BasePlayer {
 		this.name = name;
 		this.rank = rank;
 		this.nameLength = nameLength;
+	}
+
+	public BasePlayer(String name, int rank) {
+		this(name, rank, 0);
 	}
 
 	String formatString() {

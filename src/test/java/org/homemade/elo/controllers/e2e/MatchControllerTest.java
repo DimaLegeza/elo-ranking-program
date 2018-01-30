@@ -71,4 +71,11 @@ public class MatchControllerTest {
 		ResponseEntity<Match> persisted = this.restTemplate.postForEntity("/match", match, Match.class);
 		assertEquals(HttpStatus.BAD_REQUEST, persisted.getStatusCode());
 	}
+
+	@Test
+	public void testFetchForecast() {
+		ResponseEntity<Object> forecast = this.restTemplate.getForEntity("/match-forecast", Object.class);
+		assertEquals(HttpStatus.OK, forecast.getStatusCode());
+		assertNotNull(forecast.getBody());
+	}
 }
